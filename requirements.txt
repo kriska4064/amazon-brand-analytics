@@ -1,0 +1,40 @@
+# Web Framework
+Flask==2.3.2
+Flask-CORS==4.0.0
+Flask-SQLAlchemy==3.0.5
+
+# Amazon API
+boto3==1.28.25
+python-amazon-paapi==5.2.0
+
+# Обработка на Данни
+pandas==2.0.3
+numpy==1.25.1
+
+# База Данни
+PyMySQL==1.1.0
+SQLAlchemy==2.0.19
+
+# Кеширане
+redis==4.6.0
+
+# Опашка за Задачи
+celery==5.3.1
+
+# HTTP Заявки
+requests==2.31.0
+
+# Environment Променливи
+python-dotenv==1.0.0
+
+# Тестване
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Качество на Кода
+pylint==2.17.4
+black==23.7.0
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
