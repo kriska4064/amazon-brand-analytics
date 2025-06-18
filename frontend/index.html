@@ -3,254 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Brand Analytics Dashboard</title>
+    <meta name="description" content="Amazon Brand Analytics Dashboard - Анализ на брандове в Amazon">
+    <title>Amazon Brand Analytics - Dashboard</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-brand">
-            <span class="nav-logo">📊</span>
-            <span class="nav-title">Amazon Brand Analytics</span>
-        </div>
-        <div class="nav-user">
-            <span id="username">Потребител</span>
-            <button class="btn-logout" onclick="logout()">Изход</button>
-        </div>
-    </nav>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <img src="images/logo.svg" alt="SP LINK Logo" class="logo">
+                <h1 class="brand-name">Amazon Analytics</h1>
+            </div>
+            
+            <button class="navbar-toggle" id="navbarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#brands"><i class="fas fa-store"></i> Брандове</a></li>
+                <li><a href="#keywords"><i class="fas fa-key"></i> Ключови думи</a></li>
+                <li><a href="#analytics"><i class="fas fa-chart-line"></i> Аналитика</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Настройки</a></li>
+            </ul>
+            
+            <div class="navbar-user">
+                <span class="user-name">Кристина Тодорова</span>
+                <button class="btn btn-icon" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <ul class="sidebar-menu">
-            <li class="menu-item active" data-section="dashboard" onclick="showSection('dashboard')">
-                <span>🏠</span> Dashboard
-            </li>
-            <li class="menu-item" data-section="brands" onclick="showSection('brands')">
-                <span>🏷️</span> Брандове
-            </li>
-            <li class="menu-item" data-section="keywords" onclick="showSection('keywords')">
-                <span>🔑</span> Ключови думи
-            </li>
-            <li class="menu-item" data-section="competitors" onclick="showSection('competitors')">
-                <span>⚔️</span> Конкуренти
-            </li>
-            <li class="menu-item" data-section="reports" onclick="showSection('reports')">
-                <span>📋</span> Отчети
-            </li>
-            <li class="menu-item" data-section="settings" onclick="showSection('settings')">
-                <span>⚙️</span> Настройки
-            </li>
-        </ul>
-    </aside>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Навигация</h3>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="#dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#brands">
+                        <i class="fas fa-store"></i>
+                        <span>Брандове</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#keywords">
+                        <i class="fas fa-key"></i>
+                        <span>Ключови думи</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Аналитика</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Отчети</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Настройки</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        
-        <!-- Dashboard Section -->
-        <section id="section-dashboard" class="section active">
-            <div class="section-header">
-                <h1>Dashboard</h1>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Header -->
+            <div class="page-header">
+                <h2>Dashboard Overview</h2>
                 <div class="header-actions">
-                    <select id="dateRange" onchange="loadDashboard()">
-                        <option value="7">Последните 7 дни</option>
-                        <option value="30" selected>Последните 30 дни</option>
-                        <option value="90">Последните 90 дни</option>
-                    </select>
-                    <button class="btn-primary" onclick="refreshData()">🔄 Обнови</button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-filter"></i> Филтри
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Нов бранд
+                    </button>
                 </div>
             </div>
 
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-icon">📈</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="visibility-score">--</span>
-                        <span class="kpi-label">Visibility Score</span>
-                        <span class="kpi-change" id="visibility-change">--</span>
+            <!-- Dashboard Stats Grid -->
+            <div class="dashboard-grid">
+                <!-- Stat Card 1 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #FF9900;">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Brands</h3>
+                        <p class="stat-number">24</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +12% от миналия месец
+                        </span>
                     </div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🔑</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="keywords-tracked">--</span>
-                        <span class="kpi-label">Следени ключови думи</span>
-                        <span class="kpi-change" id="keywords-change">--</span>
+
+                <!-- Stat Card 2 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #36B37E;">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Products</h3>
+                        <p class="stat-number">1,248</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +8% от миналия месец
+                        </span>
                     </div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🏆</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="avg-ranking">--</span>
-                        <span class="kpi-label">Средна позиция</span>
-                        <span class="kpi-change" id="ranking-change">--</span>
+
+                <!-- Stat Card 3 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #6554C0;">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Tracked Keywords</h3>
+                        <p class="stat-number">156</p>
+                        <span class="stat-change neutral">
+                            <i class="fas fa-minus"></i> Без промяна
+                        </span>
                     </div>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🛍️</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="products-count">--</span>
-                        <span class="kpi-label">Продукти</span>
-                        <span class="kpi-change" id="products-change">--</span>
+
+                <!-- Stat Card 4 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #00B8D9;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Avg. Ranking</h3>
+                        <p class="stat-number">12.4</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-down"></i> -2.1 (по-добро)
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts -->
-            <div class="charts-grid">
-                <div class="chart-card">
+            <!-- Recent Brands Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h3>Последно добавени брандове</h3>
+                    <a href="#brands" class="view-all">Виж всички <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="brand-grid" id="recentBrands">
+                    <!-- Brand cards ще се зареждат динамично от JavaScript -->
+                    <div class="loading-skeleton">
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-row">
+                <!-- Rankings Trend Chart -->
+                <div class="chart-container">
                     <div class="chart-header">
-                        <h3>Visibility Score - Тенденция</h3>
-                        <div class="chart-controls">
-                            <button class="btn-chart-type active" onclick="changeChartType('visibility', 'line')">Линейна</button>
-                            <button class="btn-chart-type" onclick="changeChartType('visibility', 'bar')">Стълб</button>
-                        </div>
+                        <h3 class="chart-title">Rankings Trend</h3>
+                        <select class="chart-period">
+                            <option>Последните 7 дни</option>
+                            <option>Последните 30 дни</option>
+                            <option>Последните 90 дни</option>
+                        </select>
                     </div>
-                    <canvas id="visibility-chart"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="rankingsChart"></canvas>
+                    </div>
                 </div>
-                <div class="chart-card">
+
+                <!-- Category Distribution Chart -->
+                <div class="chart-container">
                     <div class="chart-header">
-                        <h3>Пазарен дял</h3>
+                        <h3 class="chart-title">Разпределение по категории</h3>
                     </div>
-                    <canvas id="market-share-chart"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
                 </div>
             </div>
-
-            <!-- Brand Performance Table -->
-            <div class="table-card">
-                <div class="table-header">
-                    <h3>Представяне на Брандове</h3>
-                    <button class="btn-export" onclick="exportData('csv')">📥 Експорт CSV</button>
-                </div>
-                <div id="loading-indicator" class="loading" style="display:none">Зареждане...</div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Бранд</th>
-                            <th>Visibility</th>
-                            <th>Ключови думи</th>
-                            <th>Средна позиция</th>
-                            <th>Тенденция</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="brands-table-body">
-                        <tr>
-                            <td colspan="6" class="no-data">Няма данни</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Brands Section -->
-        <section id="section-brands" class="section">
-            <div class="section-header">
-                <h1>Управление на Брандове</h1>
-                <button class="btn-primary" onclick="showAddBrandModal()">+ Добави Бранд</button>
-            </div>
-            <div id="brands-list" class="brands-grid">
-                <div class="no-data">Няма добавени брандове</div>
-            </div>
-        </section>
-
-        <!-- Keywords Section -->
-        <section id="section-keywords" class="section">
-            <div class="section-header">
-                <h1>Анализ на Ключови Думи</h1>
-            </div>
-            <div class="search-bar">
-                <input type="text" id="keyword-search" placeholder="Въведи ключова дума..." 
-                       onkeypress="if(event.key==='Enter') searchKeyword()">
-                <button class="btn-primary" onclick="searchKeyword()">🔍 Търси</button>
-            </div>
-            <div id="keyword-results" class="keyword-results"></div>
-        </section>
-
-        <!-- Competitors Section -->
-        <section id="section-competitors" class="section">
-            <div class="section-header">
-                <h1>Анализ на Конкуренти</h1>
-            </div>
-            <div id="competitors-analysis" class="competitors-grid"></div>
-        </section>
-
-        <!-- Reports Section -->
-        <section id="section-reports" class="section">
-            <div class="section-header">
-                <h1>Отчети</h1>
-            </div>
-            <div class="reports-options">
-                <button class="btn-report" onclick="generateReport('csv')">📊 CSV Отчет</button>
-                <button class="btn-report" onclick="generateReport('pdf')">📄 PDF Отчет</button>
-                <button class="btn-report" onclick="generateReport('excel')">📑 Excel Отчет</button>
-            </div>
-        </section>
-
-        <!-- Settings Section -->
-        <section id="section-settings" class="section">
-            <div class="section-header">
-                <h1>Настройки</h1>
-            </div>
-            <div class="settings-form">
-                <div class="form-group">
-                    <label>Amazon API Access Key</label>
-                    <input type="password" id="api-access-key" placeholder="AKIA...">
-                </div>
-                <div class="form-group">
-                    <label>Amazon Partner Tag</label>
-                    <input type="text" id="partner-tag" placeholder="yourstore-20">
-                </div>
-                <div class="form-group">
-                    <label>Region</label>
-                    <select id="aws-region">
-                        <option value="us-east-1">US East (N. Virginia)</option>
-                        <option value="eu-west-1">EU (Ireland)</option>
-                        <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="saveSettings()">💾 Запази</button>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Add Brand Modal -->
-    <div id="add-brand-modal" class="modal" style="display:none">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добави Нов Бранд</h2>
-                <button class="modal-close" onclick="closeModal('add-brand-modal')">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Име на бранда *</label>
-                    <input type="text" id="brand-name" placeholder="Въведи název на бранда">
-                </div>
-                <div class="form-group">
-                    <label>Amazon Store ID *</label>
-                    <input type="text" id="brand-store-id" placeholder="Напр. B001EXAMPLE">
-                </div>
-                <div class="form-group">
-                    <label>Категория</label>
-                    <input type="text" id="brand-category" placeholder="Напр. Electronics, Clothing...">
-                </div>
-                <div class="form-group">
-                    <label>Описание</label>
-                    <textarea id="brand-description" rows="3" placeholder="Кратко описание на бранда"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('add-brand-modal')">Отказ</button>
-                <button class="btn-primary" onclick="createBrand()">Добави</button>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <!-- Toast Notifications -->
-    <div id="toast-container"></div>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 SP LINK. Проект: BG16RFPR001-1.001</p>
+            <p>Developed by Кристина Тодорова & Team</p>
+        </div>
+    </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/chart-config.js"></script>
 </body>
 </html>
