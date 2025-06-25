@@ -110,3 +110,9 @@ class DatabaseManager:
     def close(self):
         """Close all database connections"""
         logger.info("Database connections closed")
+
+# Обновление: 25.06.2025
+# Имплементиран DatabaseManager клас за MySQL връзки
+# Добавена конфигурация за connection pooling
+# Имплементирани методи за изпълнение на queries
+# Добавена обработка на грешки и логване
