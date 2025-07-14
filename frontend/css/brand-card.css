@@ -49,3 +49,15 @@
     display: flex;
     gap: 8px;
 }
+
+/* Brand card hover improvements - Kristina */
+.brand-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transition: all 0.25s ease;
+}
+.brand-card .brand-score {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1e40af;
+}
