@@ -122,3 +122,9 @@ class Product:
     
     def __repr__(self):
         return f"<Product asin='{self.asin}' title='{self.title[:30]}...'>"
+
+# Обновление: 19.07.2025
+# Имплементиран Brand модел с CRUD операции
+# Създаден Product модел с Amazon-специфични полета
+# Добавени методи за сериализация в dictionary
+# Подготовка за database ORM интеграция
