@@ -508,3 +508,11 @@ function savePersonalization(userId, settings) {
     localStorage.setItem(`prefs_${userId}`, JSON.stringify(settings));
     showToast('Персонализацията е запазена', 'success');
 }
+
+// Brand card click handler - navigate to brand details
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.brand-card');
+  if (card && card.dataset.brandId) {
+    window.location.href = `brand-detail.html?id=${card.dataset.brandId}`;
+  }
+});
