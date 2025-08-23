@@ -134,3 +134,15 @@ class TestCacheFunctionality:
         
         # Should return same result from cache
         assert result1 == result2
+
+# Обновление: 28.06.2025 - Допълнени тестове
+class TestAPIRateLimitExtended:
+    """Extended rate limiting tests"""
+    
+    def test_request_tracking_increments(self):
+        """Test request count increments on search"""
+        client = AmazonAPIClient()
+        client.rate_limit = 0.0
+        initial = client.get_request_count()
+        client.search_products('test', page=1)
+        assert client.get_request_count() == initial + 1

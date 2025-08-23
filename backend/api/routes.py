@@ -89,3 +89,11 @@ def search_products():
 def health_check():
     """Health check endpoint"""
     return jsonify({'status': 'healthy', 'version': '0.4.0'})
+
+# Обновление: 26.07.2025
+# Добавена поддръжка на pagination за листване на брандове
+# Имплементиран endpoint за създаване на бранд с валидация
+# Създаден endpoint за изчисляване на visibility score
+# Добавена правилна обработка на грешки и status кодове
+# Подготвена структура за database интеграция
+# API Версия: 0.4.0
