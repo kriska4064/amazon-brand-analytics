@@ -1,0 +1,7 @@
+/* Responsive Design - Кристина Тодорова */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    .sidebar { width: 200px; }
+    .brand-grid { grid-template-columns: repeat(2, 1fr); }
+    .navbar-menu { font-size: 14px; }
+}
