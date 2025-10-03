@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Amazon Brand Analytics</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/analytics.css">
+    <link rel="stylesheet" href="css/charts.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header><nav class="navbar">
+        <div class="navbar-brand"><i class="fab fa-amazon"></i><span>Brand Analytics</span></div>
+        <ul class="navbar-menu">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="analytics.html" class="active">Analytics</a></li>
+        </ul>
+    </nav></header>
+    <main class="main-content" style="padding:24px">
+        <h1>Analytics Dashboard</h1>
+        <div class="analytics-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <span class="chart-title">Keyword Rankings Trend</span>
+                    <div class="time-range-selector">
+                        <button class="time-btn active">7д</button>
+                        <button class="time-btn">30д</button>
+                        <button class="time-btn">90д</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper"><canvas id="rankingsChart"></canvas></div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header"><span class="chart-title">Competitor Comparison</span></div>
+                <div class="chart-wrapper"><canvas id="competitorChart"></canvas></div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/chart-config.js"></script>
+</body>
+</html>
