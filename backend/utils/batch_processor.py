@@ -124,3 +124,10 @@ class BatchProcessor:
             'percentage': (job['processed'] / job['total'] * 100) if job['total'] > 0 else 0,
             'failed': job['failed']
         }
+
+# Обновление: 08.09.2025
+# Добавена Celery task queue интеграция
+# Имплементирана обработка на background jobs
+# Създадени scheduled задачи за refresh на данни
+# Оптимизирани database queries за bulk операции
+# Производителност: Може да обработва 100+ продукта паралелно

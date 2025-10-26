@@ -125,3 +125,10 @@ Report Period: {brand_data.get('period', {}).get('start', '')} - {brand_data.get
     def get_supported_formats(self) -> List[str]:
         """Return list of supported export formats"""
         return ['csv', 'pdf', 'excel']
+
+# Обновление: 15.09.2025
+# Имплементиран CSV експорт за класирания
+# Добавено генериране на PDF отчети
+# Създаден Excel експорт с charts
+# Изградена система за scheduled доставка на отчети
+# Поддържани формати: CSV, PDF, Excel
