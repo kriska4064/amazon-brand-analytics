@@ -127,3 +127,11 @@ class UserManager:
             'reports_generated': 0,
             'last_active': None
         }
+
+# Обновление: 03.11.2025
+# Създадена onboarding документация за тестови потребители
+# Имплементирано управление на потребителски акаунти
+# Добавена usage analytics и наблюдение
+# Създадена система за събиране на feedback
+# Настроени error reporting и logging
+# Готово за тестване с 5 Amazon продавачи
