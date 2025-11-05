@@ -1,0 +1,16 @@
+/* Message Styles - Кристина Тодорова */
+.message {
+    padding: 16px 20px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    animation: fadeIn 0.3s;
+}
+.message-error { background: #FFE5E5; border-left: 4px solid #DE350B; color: #BF2600; }
+.message-success { background: #E3FCEF; border-left: 4px solid #36B37E; color: #006644; }
+.message-warning { background: #FFFAE6; border-left: 4px solid #FFAB00; color: #7A5200; }
+.message-info { background: #E6F4FF; border-left: 4px solid #0065FF; color: #0049B7; }
+.message-icon { margin-right: 12px; font-size: 20px; }
+.message-close { margin-left: auto; background: none; border: none; cursor: pointer; font-size: 18px; opacity: 0.5; }
