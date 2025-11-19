@@ -1,0 +1,14 @@
+/* Empty States - Кристина Тодорова */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+.empty-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+    opacity: 0.5;
+}
+.empty-state h3 { font-size: 20px; color: var(--secondary-color); margin: 0 0 8px 0; }
+.empty-state p { font-size: 14px; color: #888; margin: 0 0 24px 0; }
