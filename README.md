@@ -160,3 +160,34 @@ python backend/app.py
 **Разработено в периода**: Юни 2025 - Февруари 2026  
 **TRL Прогресия**: TRL 3 → TRL 5  
 **Статус**: Успешна валидация в реална среда
+
+## API Документация
+
+### Endpoints
+
+- `GET /api/brands` - Списък на брандове с pagination
+- `POST /api/brands` - Създаване на нов бранд
+- `GET /api/brands/{id}/visibility` - Visibility score
+- `GET /api/products/search?keyword=` - Търсене на продукти
+- `GET /api/health` - Health check
+
+## Техническа Архитектура
+
+Системата е изградена на базата на microservices архитектура с:
+- Flask REST API backend
+- Redis за кеширане
+- Celery за background jobs
+- MySQL за data storage
+
+## Deployment
+
+```bash
+# Production deployment
+docker-compose up -d
+
+# Database migration
+flask db upgrade
+
+# Start Celery worker
+celery -A backend.app worker --loglevel=info
+```
