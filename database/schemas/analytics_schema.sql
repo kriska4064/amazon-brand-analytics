@@ -82,3 +82,5 @@ CREATE TABLE IF NOT EXISTS cache_data (
 -- =============================================================================
 -- КРАЙ НА ANALYTICS SCHEMA
 -- =============================================================================
+
+-- Updated: ON DELETE SET NULL constraints validated - 15 Dec 2025
