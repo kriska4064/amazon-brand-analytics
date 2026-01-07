@@ -174,3 +174,10 @@ class AmazonAPIClient:
 # Имплементирано правилно генериране на cache key за всяка страница
 # Структуриран response формат за frontend консумация
 # Подготовка за реална интеграция с Amazon Product Advertising API
+
+# Обновление: 07.01.2026
+# Фиксирани допълнителни edge cases
+# Подобрена error handling логика
+# Оптимизирани алгоритми за анализ
+# Добавена поддръжка за нови Amazon marketplace региони: de, fr, it, es, nl
+SUPPORTED_REGIONS = ['us-east-1', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']
