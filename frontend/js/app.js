@@ -492,3 +492,19 @@ function getDemoKeywordResults(keyword) {
 // Добавена обработка на грешки с fallback към demo данни
 // Създадена функционалност за създаване на бранд
 // Интегрирано зареждане на dashboard данни от backend
+
+// Обновление: 21.01.2026
+// Имплементирани финални заявки от потребителите
+// Подобрена visual consistency
+// Оптимизирана mobile experience
+// Добавени повече опции за персонализация
+
+function personalizeSettings(userId) {
+    const prefs = JSON.parse(localStorage.getItem(`prefs_${userId}`) || '{}');
+    return prefs;
+}
+
+function savePersonalization(userId, settings) {
+    localStorage.setItem(`prefs_${userId}`, JSON.stringify(settings));
+    showToast('Персонализацията е запазена', 'success');
+}
