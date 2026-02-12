@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Competitor Insights – Amazon Brand Analytics</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/trl5-modules.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="logo">
+      <h1>Amazon Brand Analytics</h1>
+      <span class="subtitle">SP LINK · TRL 5</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Scanner</a></li>
+        <li><a href="scanner-insights.html">Scanner Insights</a></li>
+        <li><a href="brand-insights.html">Brand Insights</a></li>
+        <li><a href="competitor-insights.html" class="active">Competitor Insights</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:32px;">
+
+  <div style="margin-bottom:24px;">
+    <h2 style="margin:0;">Competitor Insights</h2>
+    <p style="margin:4px 0 0;color:#6b7280;font-size:.9rem;">
+      Compare up to 5 brands side-by-side using data already collected by Amazon Scanner.
+    </p>
+  </div>
+
+  <!-- Brand Selector Bar -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);">
+    <label style="font-weight:600;display:block;margin-bottom:10px;">Add Brands to Compare (max 5)</label>
+    <div class="ci-selector-bar">
+      <input type="text" id="ci-brand-input" placeholder="Type brand name..." />
+      <button id="ci-add-brand-btn">+ Add Brand</button>
+      <button id="ci-compare-btn" disabled>Compare</button>
+      <button id="ci-clear-btn">Clear</button>
+    </div>
+    <div id="ci-selected-brands"></div>
+  </div>
+
+  <!-- Results Section (hidden until compare) -->
+  <div id="ci-results-section" style="display:none;">
+
+    <!-- Comparison Table -->
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow-x:auto;">
+      <h3 style="margin:0 0 16px;">Side-by-Side Comparison</h3>
+      <div id="ci-comparison-table-container"></div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="ci-charts-grid">
+      <div class="ci-chart-card">
+        <h4>Brand Visibility (%)</h4>
+        <canvas id="ci-visibility-chart" height="220"></canvas>
+      </div>
+      <div class="ci-chart-card">
+        <h4>Organic vs Sponsored Avg. Position</h4>
+        <canvas id="ci-position-chart" height="220"></canvas>
+      </div>
+      <div class="ci-chart-card">
+        <h4>Organic vs Sponsored Avg. Price</h4>
+        <canvas id="ci-price-chart" height="220"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="container" style="text-align:center;padding:20px;color:#9ca3af;font-size:.84rem;">
+    &copy; 2025–2026 SP LINK · EU Project BG16RFPR001-1.001 · TRL 5
+  </div>
+</footer>
+
+<script src="js/marketplaces.js"></script>
+<script src="js/competitor-insights.js"></script>
+</body>
+</html>
