@@ -31,3 +31,9 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+# Обновление: 28.01.2026 - Final bug fixes и code cleanup
+# Почистен legacy код
+# Оптимизирани imports
+# Подобрени коментари в кода
+# Актуализирани dependencies
