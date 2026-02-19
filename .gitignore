@@ -63,3 +63,4 @@ npm-debug.log*
 dist/
 *.tar.gz
 *.zip
+.github/

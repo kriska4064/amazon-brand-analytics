@@ -1,0 +1,29 @@
+# Testing Requirements - Amazon Brand Analytics
+# Автор: Цвета Попова
+# Дата: 28 Октомври 2025
+
+# Core testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-html==4.0.2
+pytest-xdist==3.4.0
+
+# Code coverage
+coverage==7.3.2
+
+# HTTP testing
+requests==2.31.0
+httpretty==1.1.4
+
+# Mocking
+unittest-mock==1.4.0
+
+# E2E testing
+selenium==4.15.2
+webdriver-manager==4.0.1
+
+# Performance testing
+locust==2.19.1
+
+# Assertions
+assertpy==1.1
