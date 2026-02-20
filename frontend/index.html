@@ -3,254 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Brand Analytics Dashboard</title>
+    <title>Софтуер за Анализ на Брандове в Amazon - SP LINK</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-brand">
-            <span class="nav-logo">📊</span>
-            <span class="nav-title">Amazon Brand Analytics</span>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Анализ на Брандове в Amazon</h1>
+                <p class="subtitle">от SP LINK</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#keywords">Ключови Думи</a></li>
+                    <li><a href="#competitors">Конкуренти</a></li>
+                    <li><a href="#reports">Отчети</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="nav-user">
-            <span id="username">Потребител</span>
-            <button class="btn-logout" onclick="logout()">Изход</button>
-        </div>
-    </nav>
+    </header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <ul class="sidebar-menu">
-            <li class="menu-item active" data-section="dashboard" onclick="showSection('dashboard')">
-                <span>🏠</span> Dashboard
-            </li>
-            <li class="menu-item" data-section="brands" onclick="showSection('brands')">
-                <span>🏷️</span> Брандове
-            </li>
-            <li class="menu-item" data-section="keywords" onclick="showSection('keywords')">
-                <span>🔑</span> Ключови думи
-            </li>
-            <li class="menu-item" data-section="competitors" onclick="showSection('competitors')">
-                <span>⚔️</span> Конкуренти
-            </li>
-            <li class="menu-item" data-section="reports" onclick="showSection('reports')">
-                <span>📋</span> Отчети
-            </li>
-            <li class="menu-item" data-section="settings" onclick="showSection('settings')">
-                <span>⚙️</span> Настройки
-            </li>
-        </ul>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        
-        <!-- Dashboard Section -->
-        <section id="section-dashboard" class="section active">
-            <div class="section-header">
-                <h1>Dashboard</h1>
-                <div class="header-actions">
-                    <select id="dateRange" onchange="loadDashboard()">
-                        <option value="7">Последните 7 дни</option>
-                        <option value="30" selected>Последните 30 дни</option>
-                        <option value="90">Последните 90 дни</option>
-                    </select>
-                    <button class="btn-primary" onclick="refreshData()">🔄 Обнови</button>
+    <main class="container">
+        <section id="dashboard" class="dashboard">
+            <h2>Dashboard за Представяне на Бранд</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Средна Позиция</h3>
+                    <div class="metric-value" id="avg-position">-</div>
+                    <div class="metric-trend" id="position-trend">-</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Показател за Видимост</h3>
+                    <div class="metric-value" id="visibility-score">-</div>
+                    <div class="metric-change">-</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Общо Ключови Думи</h3>
+                    <div class="metric-value" id="total-keywords">-</div>
+                    <div class="metric-change">-</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Топ 10 Позиции</h3>
+                    <div class="metric-value" id="top10-count">-</div>
+                    <div class="metric-change">-</div>
                 </div>
             </div>
 
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-icon">📈</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="visibility-score">--</span>
-                        <span class="kpi-label">Visibility Score</span>
-                        <span class="kpi-change" id="visibility-change">--</span>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🔑</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="keywords-tracked">--</span>
-                        <span class="kpi-label">Следени ключови думи</span>
-                        <span class="kpi-change" id="keywords-change">--</span>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🏆</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="avg-ranking">--</span>
-                        <span class="kpi-label">Средна позиция</span>
-                        <span class="kpi-change" id="ranking-change">--</span>
-                    </div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🛍️</div>
-                    <div class="kpi-data">
-                        <span class="kpi-value" id="products-count">--</span>
-                        <span class="kpi-label">Продукти</span>
-                        <span class="kpi-change" id="products-change">--</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Charts -->
             <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Visibility Score - Тенденция</h3>
-                        <div class="chart-controls">
-                            <button class="btn-chart-type active" onclick="changeChartType('visibility', 'line')">Линейна</button>
-                            <button class="btn-chart-type" onclick="changeChartType('visibility', 'bar')">Стълб</button>
-                        </div>
-                    </div>
-                    <canvas id="visibility-chart"></canvas>
+                <div class="chart-container">
+                    <h3>Тренд на Класиране (Последните 30 Дни)</h3>
+                    <canvas id="rankingChart"></canvas>
                 </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>Пазарен дял</h3>
-                    </div>
-                    <canvas id="market-share-chart"></canvas>
+                
+                <div class="chart-container">
+                    <h3>Разпределение на Ключови Думи</h3>
+                    <canvas id="keywordChart"></canvas>
                 </div>
             </div>
+        </section>
 
-            <!-- Brand Performance Table -->
-            <div class="table-card">
-                <div class="table-header">
-                    <h3>Представяне на Брандове</h3>
-                    <button class="btn-export" onclick="exportData('csv')">📥 Експорт CSV</button>
-                </div>
-                <div id="loading-indicator" class="loading" style="display:none">Зареждане...</div>
-                <table class="data-table">
+        <section id="keywords" class="keywords-section" style="display:none;">
+            <h2>Анализ на Ключови Думи</h2>
+            
+            <div class="search-bar">
+                <input type="text" id="keyword-search" placeholder="Търси ключови думи...">
+                <button onclick="searchKeywords()">Търси</button>
+            </div>
+            
+            <div class="keywords-table">
+                <table>
                     <thead>
                         <tr>
-                            <th>Бранд</th>
-                            <th>Visibility</th>
-                            <th>Ключови думи</th>
-                            <th>Средна позиция</th>
+                            <th>Ключова Дума</th>
+                            <th>Обем на Търсене</th>
+                            <th>Текуща Позиция</th>
                             <th>Тенденция</th>
-                            <th>Действия</th>
+                            <th>Конкуренция</th>
                         </tr>
                     </thead>
-                    <tbody id="brands-table-body">
-                        <tr>
-                            <td colspan="6" class="no-data">Няма данни</td>
-                        </tr>
+                    <tbody id="keywords-tbody">
+                        <!-- Данните ще се заредят от JavaScript -->
                     </tbody>
                 </table>
             </div>
         </section>
-
-        <!-- Brands Section -->
-        <section id="section-brands" class="section">
-            <div class="section-header">
-                <h1>Управление на Брандове</h1>
-                <button class="btn-primary" onclick="showAddBrandModal()">+ Добави Бранд</button>
-            </div>
-            <div id="brands-list" class="brands-grid">
-                <div class="no-data">Няма добавени брандове</div>
-            </div>
-        </section>
-
-        <!-- Keywords Section -->
-        <section id="section-keywords" class="section">
-            <div class="section-header">
-                <h1>Анализ на Ключови Думи</h1>
-            </div>
-            <div class="search-bar">
-                <input type="text" id="keyword-search" placeholder="Въведи ключова дума..." 
-                       onkeypress="if(event.key==='Enter') searchKeyword()">
-                <button class="btn-primary" onclick="searchKeyword()">🔍 Търси</button>
-            </div>
-            <div id="keyword-results" class="keyword-results"></div>
-        </section>
-
-        <!-- Competitors Section -->
-        <section id="section-competitors" class="section">
-            <div class="section-header">
-                <h1>Анализ на Конкуренти</h1>
-            </div>
-            <div id="competitors-analysis" class="competitors-grid"></div>
-        </section>
-
-        <!-- Reports Section -->
-        <section id="section-reports" class="section">
-            <div class="section-header">
-                <h1>Отчети</h1>
-            </div>
-            <div class="reports-options">
-                <button class="btn-report" onclick="generateReport('csv')">📊 CSV Отчет</button>
-                <button class="btn-report" onclick="generateReport('pdf')">📄 PDF Отчет</button>
-                <button class="btn-report" onclick="generateReport('excel')">📑 Excel Отчет</button>
-            </div>
-        </section>
-
-        <!-- Settings Section -->
-        <section id="section-settings" class="section">
-            <div class="section-header">
-                <h1>Настройки</h1>
-            </div>
-            <div class="settings-form">
-                <div class="form-group">
-                    <label>Amazon API Access Key</label>
-                    <input type="password" id="api-access-key" placeholder="AKIA...">
-                </div>
-                <div class="form-group">
-                    <label>Amazon Partner Tag</label>
-                    <input type="text" id="partner-tag" placeholder="yourstore-20">
-                </div>
-                <div class="form-group">
-                    <label>Region</label>
-                    <select id="aws-region">
-                        <option value="us-east-1">US East (N. Virginia)</option>
-                        <option value="eu-west-1">EU (Ireland)</option>
-                        <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="saveSettings()">💾 Запази</button>
-            </div>
-        </section>
-
     </main>
 
-    <!-- Add Brand Modal -->
-    <div id="add-brand-modal" class="modal" style="display:none">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добави Нов Бранд</h2>
-                <button class="modal-close" onclick="closeModal('add-brand-modal')">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Име на бранда *</label>
-                    <input type="text" id="brand-name" placeholder="Въведи název на бранда">
-                </div>
-                <div class="form-group">
-                    <label>Amazon Store ID *</label>
-                    <input type="text" id="brand-store-id" placeholder="Напр. B001EXAMPLE">
-                </div>
-                <div class="form-group">
-                    <label>Категория</label>
-                    <input type="text" id="brand-category" placeholder="Напр. Electronics, Clothing...">
-                </div>
-                <div class="form-group">
-                    <label>Описание</label>
-                    <textarea id="brand-description" rows="3" placeholder="Кратко описание на бранда"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal('add-brand-modal')">Отказ</button>
-                <button class="btn-primary" onclick="createBrand()">Добави</button>
-            </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025-2026 SP LINK. ЕС Проект BG16RFPR001-1.001</p>
+            <p>Разработен от Мартин Дачев и екип</p>
         </div>
-    </div>
-
-    <!-- Toast Notifications -->
-    <div id="toast-container"></div>
+    </footer>
 
     <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

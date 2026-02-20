@@ -1,0 +1,35 @@
+/* Dashboard Cards - Кристина Тодорова */
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-color), #e68a00);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.stat-info h3 { font-size: 14px; color: #666; margin: 0 0 4px 0; font-weight: 500; }
+.stat-number { font-size: 28px; font-weight: 700; color: var(--secondary-color); margin: 0; }
+.stat-change { font-size: 12px; }
+.stat-change.positive { color: #36B37E; }
+.stat-change.negative { color: #DE350B; }

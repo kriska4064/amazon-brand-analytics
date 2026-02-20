@@ -1,0 +1,15 @@
+/* Dark Mode - Кристина Тодорова */
+[data-theme="dark"] {
+    --bg-color: #1a1a2e;
+    --card-bg: #16213e;
+    --text-color: #e0e0e0;
+    --secondary-color: #0f3460;
+    --border-color: #2a2a4a;
+    --card-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+[data-theme="dark"] body { background: var(--bg-color); color: var(--text-color); }
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .chart-container,
+[data-theme="dark"] .brand-card { background: var(--card-bg); }
+.theme-toggle { background: none; border: 2px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 12px; color: white; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.theme-toggle:hover { border-color: var(--primary-color); color: var(--primary-color); }

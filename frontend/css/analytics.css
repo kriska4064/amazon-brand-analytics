@@ -1,0 +1,20 @@
+/* Analytics View - Кристина Тодорова */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+.analytics-chart-full { grid-column: 1 / -1; }
+.time-range-selector { display: flex; gap: 8px; }
+.time-btn {
+    padding: 6px 14px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.time-btn.active { background: var(--primary-color); border-color: var(--primary-color); color: white; }
+@media (max-width: 768px) { .analytics-grid { grid-template-columns: 1fr; } }

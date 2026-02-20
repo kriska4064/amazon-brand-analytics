@@ -1,39 +1,64 @@
 """
-Amazon Brand Analytics - Main Application Entry Point
+Софтуер за Анализ на Брандове в Amazon - Главно Приложение
+Водещ Разработчик: Мартин Дачев (martin.da4ev@gmail.com)
+Компания: SP LINK
+Проект: ЕС BG16RFPR001-1.001
 """
-from flask import Flask
+
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-from api.routes import api_bp
-import logging
+from flask_sqlalchemy import SQLAlchemy
+import os
+from dotenv import load_dotenv
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# Зареждане на environment променливи
+load_dotenv('config/.env')
+
+# Инициализация на Flask приложение
+app = Flask(__name__)
+CORS(app)
+
+# Конфигурация
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
+    f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 )
-logger = logging.getLogger(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
+# Инициализация на база данни
+db = SQLAlchemy(app)
 
-def create_app():
-    """Create and configure the Flask application"""
-    app = Flask(__name__)
-    
-    # Enable CORS
-    CORS(app)
-    
-    # Register blueprints
-    app.register_blueprint(api_bp, url_prefix='/api')
-    
-    logger.info("Amazon Brand Analytics application started")
-    return app
+# Импортиране на модули
+from api.routes import api_blueprint
+from amazon_integration.amazon_api import AmazonAPIClient
 
+# Регистриране на blueprints
+app.register_blueprint(api_blueprint, url_prefix='/api')
+
+@app.route('/')
+def index():
+    """Начална страница"""
+    return jsonify({
+        'проект': 'Софтуер за Анализ на Брандове в Amazon',
+        'версия': '0.5.0',
+        'статус': 'TRL 5 - Валидиран Прототип',
+        'компания': 'SP LINK',
+        'разработчик': 'Мартин Дачев'
+    })
+
+@app.route('/health')
+def health_check():
+    """Проверка на здравословното състояние на системата"""
+    return jsonify({
+        'статус': 'работи',
+        'база_данни': 'свързана',
+        'api': 'оперативно'
+    }), 200
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
-# Обновление: 28.01.2026 - Final bug fixes и code cleanup
-# Почистен legacy код
-# Оптимизирани imports
-# Подобрени коментари в кода
-# Актуализирани dependencies
+    app.run(
+        host='0.0.0.0',
+        port=5000,
+        debug=(os.getenv('FLASK_ENV') == 'development')
+    )

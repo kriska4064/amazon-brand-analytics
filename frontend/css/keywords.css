@@ -1,0 +1,16 @@
+/* Keywords Table - Кристина Тодорова */
+.keywords-table { width: 100%; border-collapse: collapse; }
+.keywords-table th {
+    background: var(--secondary-color);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+}
+.keywords-table td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+.keywords-table tr:hover td { background: #fafafa; }
+.rank-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.rank-up { background: #E3FCEF; color: #006644; }
+.rank-down { background: #FFEBE6; color: #BF2600; }
+.rank-same { background: #F4F5F7; color: #666; }
