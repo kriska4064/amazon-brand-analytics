@@ -1,107 +1,103 @@
 """
-API Routes for Amazon Brand Analytics
-Version: 0.4.0
+API Routes за Софтуера за Анализ на Брандове в Amazon
+Автор: Мартин Дачев
 """
-from flask import Blueprint, request, jsonify
-import logging
 
-logger = logging.getLogger(__name__)
+from flask import Blueprint, jsonify, request
+from datetime import datetime
 
-api_bp = Blueprint('api', __name__)
+api_blueprint = Blueprint('api', __name__)
 
-
-@api_bp.route('/brands', methods=['GET'])
-def list_brands():
-    """List all brands with pagination"""
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
-    
-    # Placeholder for database integration
-    brands = []
-    total = 0
-    
+@api_blueprint.route('/brands', methods=['GET'])
+def get_brands():
+    """Вземи всички брандове"""
+    # TODO: Имплементирай database query
     return jsonify({
-        'brands': brands,
-        'page': page,
-        'per_page': per_page,
-        'total': total,
-        'pages': (total + per_page - 1) // per_page
+        'брандове': [],
+        'брой': 0,
+        'времеви_печат': datetime.now().isoformat()
     })
 
+@api_blueprint.route('/brands/<int:brand_id>', methods=['GET'])
+def get_brand(brand_id):
+    """Вземи конкретен бранд по ID"""
+    # TODO: Имплементирай database query
+    return jsonify({
+        'brand_id': brand_id,
+        'данни': {},
+        'времеви_печат': datetime.now().isoformat()
+    })
 
-@api_bp.route('/brands', methods=['POST'])
+@api_blueprint.route('/keywords/search', methods=['POST'])
+def search_keywords():
+    """Търси ключови думи за бранд"""
+    data = request.get_json()
+    keyword = data.get('keyword', '')
+    
+    # TODO: Имплементирай Amazon API извикване
+    return jsonify({
+        'ключова_дума': keyword,
+        'резултати': [],
+        'обем_на_търсене': 0,
+        'времеви_печат': datetime.now().isoformat()
+    })
+
+@api_blueprint.route('/analytics/rankings', methods=['GET'])
+def get_rankings():
+    """Вземи класирания на продукти"""
+    brand_id = request.args.get('brand_id')
+    
+    # TODO: Имплементирай анализ на класиране
+    return jsonify({
+        'brand_id': brand_id,
+        'класирания': [],
+        'времеви_печат': datetime.now().isoformat()
+    })
+
+@api_blueprint.route('/analytics/competitors', methods=['GET'])
+def get_competitors():
+    """Вземи анализ на конкуренция"""
+    brand_id = request.args.get('brand_id')
+    
+    # TODO: Имплементирай анализ на конкуренция
+    return jsonify({
+        'brand_id': brand_id,
+        'конкуренти': [],
+        'времеви_печат': datetime.now().isoformat()
+    })
+
+@api_blueprint.route('/brands', methods=['POST'])
 def create_brand():
-    """Create a new brand with validation"""
+    """Създай нов бранд"""
     data = request.get_json()
     
-    if not data:
-        return jsonify({'error': 'No data provided'}), 400
+    # Валидация на входни данни
+    if not data.get('brand_name'):
+        return jsonify({'грешка': 'Името на бранда е задължително'}), 400
     
-    required_fields = ['name', 'amazon_store_id']
-    for field in required_fields:
-        if field not in data:
-            return jsonify({'error': f'Missing required field: {field}'}), 400
+    # TODO: Запази в база данни
+    brand_id = 1  # Placeholder
     
-    brand = {
-        'id': 1,
-        'name': data['name'],
-        'amazon_store_id': data['amazon_store_id'],
-        'created_at': '2025-06-01T00:00:00'
-    }
-    
-    return jsonify(brand), 201
-
-
-@api_bp.route('/brands/<int:brand_id>/visibility', methods=['GET'])
-def get_visibility_score(brand_id):
-    """Calculate and return visibility score for a brand"""
-    # Placeholder for visibility calculation
-    score = {
+    return jsonify({
+        'съобщение': 'Брандът е създаден успешно',
         'brand_id': brand_id,
-        'visibility_score': 0.0,
-        'trend': 'stable',
-        'calculated_at': '2025-06-01T00:00:00'
-    }
+        'времеви_печат': datetime.now().isoformat()
+    }), 201
+
+@api_blueprint.route('/analytics/visibility-score', methods=['GET'])
+def calculate_visibility_score():
+    """Изчисли показател за видимост на бранда"""
+    brand_id = request.args.get('brand_id', type=int)
     
-    return jsonify(score)
-
-
-@api_bp.route('/products/search', methods=['GET'])
-def search_products():
-    """Search products with pagination"""
-    keyword = request.args.get('keyword', '')
-    page = request.args.get('page', 1, type=int)
+    if not brand_id:
+        return jsonify({'грешка': 'Brand ID е задължителен'}), 400
     
-    if not keyword:
-        return jsonify({'error': 'Keyword is required'}), 400
+    # TODO: Вземи класирания от база данни и изчисли
+    visibility_score = 0.0
     
-    results = {
-        'keyword': keyword,
-        'page': page,
-        'products': [],
-        'total': 0
-    }
-    
-    return jsonify(results)
-
-
-@api_bp.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'version': '0.4.0'})
-
-# Обновление: 26.07.2025
-# Добавена поддръжка на pagination за листване на брандове
-# Имплементиран endpoint за създаване на бранд с валидация
-# Създаден endpoint за изчисляване на visibility score
-# Добавена правилна обработка на грешки и status кодове
-# Подготвена структура за database интеграция
-# API Версия: 0.4.0
-
-# Обновление: 12.10.2025 - Bug fixes партида #1
-# Фиксирани edge cases при инвалидиране на кеш
-# Грешки в изчисляване на позиция на класиране
-# Проблеми с рендериране на dashboard charts
-# Обработка на API rate limit
-# Предотвратяване на database deadlock
-# Решени issues: #1, #2, #3, #4, #5
+    return jsonify({
+        'brand_id': brand_id,
+        'показател_видимост': visibility_score,
+        'метод_на_изчисление': 'претеглена_позиция',
+        'времеви_печат': datetime.now().isoformat()
+    }), 200

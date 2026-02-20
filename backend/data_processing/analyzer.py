@@ -1,255 +1,229 @@
 """
-Data Analyzer Module
-Handles keyword ranking detection, tracking and competitor analysis
+Модул за Анализ на Данни
+Обработва данни от Amazon и генерира прозрения
+Автор: Диана Георгиева (с архитектура от Мартин Дачев)
 """
-import logging
-from datetime import datetime
-from typing import List, Dict, Optional
 
-logger = logging.getLogger(__name__)
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+from typing import List, Dict
 
-
-class KeywordRankAnalyzer:
+class BrandAnalyzer:
     """
-    Analyzes keyword rankings for Amazon products.
-    Detects position in search results and tracks changes over time.
+    Анализатор за показатели на представяне на брандове
     """
     
     def __init__(self):
-        self.ranking_history = {}
-        logger.info("KeywordRankAnalyzer initialized")
+        """Инициализира анализатора"""
+        self.data = None
     
-    def detect_product_position(self, search_results: List[Dict], target_asin: str) -> Optional[int]:
+    def analyze_keyword_performance(self, keyword_data: List[Dict]) -> Dict:
         """
-        Detect the position of a product in search results.
+        Анализира представяне на ключови думи във времето
         
         Args:
-            search_results: List of products from search
-            target_asin: The ASIN to find
+            keyword_data: Списък със записи за класиране на ключови думи
             
         Returns:
-            Position (1-indexed) or None if not found
+            Dict с резултати от анализа
         """
-        for idx, product in enumerate(search_results, 1):
-            if product.get('asin') == target_asin:
-                logger.info(f"Product {target_asin} found at position {idx}")
-                return idx
-        
-        logger.info(f"Product {target_asin} not found in search results")
-        return None
-    
-    def track_ranking_changes(self, keyword: str, asin: str, 
-                               current_position: int, 
-                               previous_position: Optional[int] = None) -> Dict:
-        """
-        Track changes in ranking between periods.
-        
-        Returns:
-            dict with improvement/decline data
-        """
-        change = 0
-        trend = 'stable'
-        
-        if previous_position is not None and current_position is not None:
-            # Lower position number = better ranking
-            change = previous_position - current_position
-            if change > 0:
-                trend = 'improved'
-            elif change < 0:
-                trend = 'declined'
-        
-        # Store in history
-        history_key = f"{keyword}_{asin}"
-        if history_key not in self.ranking_history:
-            self.ranking_history[history_key] = []
-        
-        entry = {
-            'timestamp': datetime.now().isoformat(),
-            'position': current_position,
-            'change': change,
-            'trend': trend
-        }
-        self.ranking_history[history_key].append(entry)
-        
-        logger.info(f"Ranking tracked - Keyword: {keyword}, ASIN: {asin}, "
-                   f"Position: {current_position}, Trend: {trend}")
-        
-        return {
-            'keyword': keyword,
-            'asin': asin,
-            'current_position': current_position,
-            'previous_position': previous_position,
-            'change': change,
-            'trend': trend,
-            'improvements': max(0, change),
-            'declines': max(0, -change)
-        }
-    
-    def analyze_trends(self, keyword: str, asin: str, periods: int = 7) -> Dict:
-        """
-        Analyze ranking trends for dashboard visualization.
-        
-        Args:
-            keyword: Search keyword
-            asin: Product ASIN
-            periods: Number of periods to analyze
-            
-        Returns:
-            Trend analysis data for visualization
-        """
-        history_key = f"{keyword}_{asin}"
-        history = self.ranking_history.get(history_key, [])
-        
-        if not history:
+        if not keyword_data:
             return {
-                'keyword': keyword,
-                'asin': asin,
-                'trend': 'no_data',
-                'data_points': []
+                'грешка': 'Не са предоставени данни',
+                'показатели': {}
             }
         
-        recent = history[-periods:] if len(history) >= periods else history
+        # Преобразувай в DataFrame за анализ
+        df = pd.DataFrame(keyword_data)
         
-        positions = [entry['position'] for entry in recent if entry['position'] is not None]
-        
-        if len(positions) >= 2:
-            avg_improvement = sum(
-                recent[i]['change'] for i in range(1, len(recent))
-            ) / (len(recent) - 1)
-            overall_trend = 'improved' if avg_improvement > 0 else \
-                           'declined' if avg_improvement < 0 else 'stable'
-        else:
-            overall_trend = 'insufficient_data'
+        # Изчисли показатели
+        metrics = {
+            'средна_позиция': df['позиция'].mean() if 'позиция' in df else 0,
+            'най_добра_позиция': df['позиция'].min() if 'позиция' in df else 0,
+            'най_лоша_позиция': df['позиция'].max() if 'позиция' in df else 0,
+            'тенденция_на_позиция': self._calculate_trend(df['позиция'].tolist()) if 'позиция' in df else 0,
+            'общо_ключови_думи': len(df),
+            'времеви_печат': datetime.now().isoformat()
+        }
         
         return {
-            'keyword': keyword,
-            'asin': asin,
-            'trend': overall_trend,
-            'data_points': recent,
-            'best_position': min(positions) if positions else None,
-            'worst_position': max(positions) if positions else None,
-            'average_position': sum(positions) / len(positions) if positions else None
+            'показатели': metrics,
+            'препоръки': self._generate_recommendations(metrics)
         }
-
-
-class CompetitorAnalyzer:
-    """
-    Analyzes competitor brands and products on Amazon.
-    Detects competitors, calculates market share and compares rankings.
-    """
     
-    def __init__(self):
-        self.competitor_data = {}
-        logger.info("CompetitorAnalyzer initialized")
-    
-    def detect_competitors(self, search_results: List[Dict], 
-                           target_brand: str, top_n: int = 5) -> List[Dict]:
+    def compare_competitors(self, brand_data: Dict, competitor_data: List[Dict]) -> Dict:
         """
-        Detect competitor brands in search results.
+        Сравни представяне на бранд спрямо конкуренти
         
         Args:
-            search_results: Products from Amazon search
-            target_brand: The brand we're analyzing
-            top_n: Number of top competitors to return
+            brand_data: Данни за представяне на бранда
+            competitor_data: Списък с данни за представяне на конкуренти
             
         Returns:
-            List of competitor brands with data
+            Dict с резултати от сравнението
         """
-        brand_counts = {}
-        brand_positions = {}
-        
-        for idx, product in enumerate(search_results, 1):
-            brand = product.get('brand', 'Unknown')
-            if brand == target_brand:
-                continue
-            
-            if brand not in brand_counts:
-                brand_counts[brand] = 0
-                brand_positions[brand] = []
-            
-            brand_counts[brand] += 1
-            brand_positions[brand].append(idx)
-        
-        competitors = []
-        for brand, count in sorted(brand_counts.items(), key=lambda x: x[1], reverse=True)[:top_n]:
-            avg_position = sum(brand_positions[brand]) / len(brand_positions[brand])
-            competitors.append({
-                'brand': brand,
-                'product_count': count,
-                'average_position': avg_position,
-                'best_position': min(brand_positions[brand])
-            })
-        
-        logger.info(f"Detected {len(competitors)} competitors for brand: {target_brand}")
-        return competitors
-    
-    def calculate_market_share(self, search_results: List[Dict]) -> Dict:
-        """
-        Calculate market share based on search result presence.
-        
-        Returns:
-            dict with brand -> market share percentage
-        """
-        total = len(search_results)
-        if total == 0:
-            return {}
-        
-        brand_counts = {}
-        for product in search_results:
-            brand = product.get('brand', 'Unknown')
-            brand_counts[brand] = brand_counts.get(brand, 0) + 1
-        
-        market_share = {
-            brand: (count / total) * 100 
-            for brand, count in brand_counts.items()
+        # TODO: Имплементирай логика за сравнение на конкуренти
+        return {
+            'позиция_на_бранд': brand_data.get('средна_позиция', 0),
+            'конкуренти': [],
+            'пазарен_дял': 0.0,
+            'препоръки': []
         }
-        
-        return dict(sorted(market_share.items(), key=lambda x: x[1], reverse=True))
     
-    def compare_rankings(self, target_brand: str, 
-                         competitors: List[Dict],
-                         keyword: str) -> Dict:
+    def calculate_visibility_score(self, rankings: List[Dict]) -> float:
         """
-        Compare rankings between target brand and competitors.
+        Изчисли показател за видимост на бранд (0-100)
         
+        Args:
+            rankings: Списък със записи за класиране
+            
         Returns:
-            Comparison data for dashboard visualization
+            Показател за видимост
         """
-        comparison = {
-            'keyword': keyword,
-            'target_brand': target_brand,
-            'competitors': competitors,
-            'ranking_comparison': [],
-            'timestamp': datetime.now().isoformat()
+        if not rankings:
+            return 0.0
+        
+        # Претеглено оценяване: по-високи позиции = по-висок резултат
+        total_score = 0
+        for ranking in rankings:
+            position = ranking.get('позиция', 100)
+            # Позиция 1 = 100 точки, позиция 20 = 5 точки
+            score = max(0, 100 - (position - 1) * 5)
+            total_score += score
+        
+        # Среден резултат
+        return round(total_score / len(rankings), 2)
+    
+    def detect_product_position(self, search_results: List[Dict], target_asin: str) -> Optional[Dict]:
+        """
+        Открий позицията на конкретен продукт в резултатите от търсене
+        
+        Args:
+            search_results: Списък с резултати от търсене на продукти
+            target_asin: ASIN на продукта за намиране
+            
+        Returns:
+            Dict с информация за позицията или None ако не е намерен
+        """
+        for index, product in enumerate(search_results):
+            if product.get('asin') == target_asin:
+                position = index + 1
+                page = (position - 1) // 20 + 1
+                position_on_page = ((position - 1) % 20) + 1
+                
+                return {
+                    'asin': target_asin,
+                    'обща_позиция': position,
+                    'страница': page,
+                    'позиция_на_страница': position_on_page,
+                    'спонсорирана': product.get('спонсорирана', False),
+                    'времеви_печат': datetime.now().isoformat()
+                }
+        
+        return None
+    
+    def track_ranking_changes(self, current_rankings: List[Dict], 
+                             previous_rankings: List[Dict]) -> Dict:
+        """
+        Сравни текущи и предишни класирания за откриване на промени
+        
+        Args:
+            current_rankings: Текущи данни за класиране
+            previous_rankings: Предишни данни за класиране
+            
+        Returns:
+            Dict с анализ на промените в класирането
+        """
+        changes = []
+        
+        for current in current_rankings:
+            asin = current.get('asin')
+            keyword = current.get('ключова_дума')
+            current_pos = current.get('позиция')
+            
+            # Намери предишно класиране за същия ASIN и ключова дума
+            previous = next(
+                (p for p in previous_rankings 
+                 if p.get('asin') == asin and p.get('ключова_дума') == keyword),
+                None
+            )
+            
+            if previous:
+                previous_pos = previous.get('позиция')
+                change = previous_pos - current_pos  # Положително = подобрение
+                
+                changes.append({
+                    'asin': asin,
+                    'ключова_дума': keyword,
+                    'текуща_позиция': current_pos,
+                    'предишна_позиция': previous_pos,
+                    'промяна': change,
+                    'тенденция': 'подобрение' if change > 0 else 'влошаване' if change < 0 else 'стабилно'
+                })
+        
+        return {
+            'промени': changes,
+            'общо_проследени': len(changes),
+            'подобрения': len([c for c in changes if c['промяна'] > 0]),
+            'влошавания': len([c for c in changes if c['промяна'] < 0]),
+            'времеви_печат': datetime.now().isoformat()
         }
+    
+    def _calculate_trend(self, values: List[float]) -> str:
+        """
+        Изчисли посока на тенденция
         
-        for comp in competitors:
-            comparison['ranking_comparison'].append({
-                'brand': comp['brand'],
-                'average_position': comp['average_position'],
-                'best_position': comp['best_position'],
-                'product_count': comp['product_count']
-            })
+        Args:
+            values: Списък с числови стойности във времето
+            
+        Returns:
+            Посока на тенденция: 'подобрение', 'стабилно', 'влошаване'
+        """
+        if len(values) < 2:
+            return 'стабилно'
         
-        return comparison
-
-# Обновление: 12.07.2025
-# Имплементирано откриване на позиция на продукт в резултатите от търсене
-# Добавено проследяване на промени в класирането между периоди
-# Изчислени подобрения и влошавания на позициите
-# Подготвен анализ на тенденции за dashboard визуализация
-
-# Обновление: 16.08.2025
-# Имплементиран алгоритъм за откриване на конкуренти
-# Добавено изчисляване на пазарен дял
-# Създадено сравнение на класиране на конкуренти
-# Интегрирани данни за конкуренти в dashboard
-# Ключова функционалност за стратегическо позициониране на брандове
-
-# Обновление: 24.11.2025 - Feedback от пилотен тест
-# Подобрен алгоритъм за предложения на ключови думи
-# Добавен bulk import за продукти
-# Подобрени competitor comparison charts
-# Фиксирани проблеми с date range selector
-# Оптимизирана скорост на зареждане на dashboard
-# Адресирани 12 потребителски заявки от 5-те пилотни потребители
+        # Проста линейна регресия
+        x = np.arange(len(values))
+        y = np.array(values)
+        slope = np.polyfit(x, y, 1)[0]
+        
+        # За класирания, отрицателен наклон = подобрение (по-ниско число на позиция)
+        if slope < -0.5:
+            return 'подобрение'
+        elif slope > 0.5:
+            return 'влошаване'
+        else:
+            return 'стабилно'
+    
+    def _generate_recommendations(self, metrics: Dict) -> List[str]:
+        """
+        Генерира препоръки за оптимизация базирани на показателите
+        
+        Args:
+            metrics: Показатели за представяне
+            
+        Returns:
+            Списък с препоръки
+        """
+        recommendations = []
+        
+        avg_pos = metrics.get('средна_позиция', 100)
+        trend = metrics.get('тенденция_на_позиция', 'стабилно')
+        
+        if avg_pos > 20:
+            recommendations.append(
+                "Средната позиция е под първа страница. Разгледайте подобряване на SEO и увеличаване на разходите за реклама."
+            )
+        
+        if trend == 'влошаване':
+            recommendations.append(
+                "Класиранията се влошават. Прегледайте стратегиите на конкурентите и актуализирайте описанията на продуктите."
+            )
+        
+        if trend == 'подобрение':
+            recommendations.append(
+                "Класиранията се подобряват. Продължете текущите стратегии за оптимизация."
+            )
+        
+        return recommendations

@@ -3,233 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amazon Brand Analytics Dashboard - Анализ на брандове в Amazon">
-    <title>Amazon Brand Analytics - Dashboard</title>
-    
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="css/variables.css">
+    <title>Софтуер за Анализ на Брандове в Amazon - SP LINK</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/cards.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="navbar-brand">
-                <img src="images/logo.svg" alt="SP LINK Logo" class="logo">
-                <h1 class="brand-name">Amazon Analytics</h1>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Анализ на Брандове в Amazon</h1>
+                <p class="subtitle">от SP LINK</p>
             </div>
-            
-            <button class="navbar-toggle" id="navbarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <ul class="navbar-menu" id="navbarMenu">
-                <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#brands"><i class="fas fa-store"></i> Брандове</a></li>
-                <li><a href="#keywords"><i class="fas fa-key"></i> Ключови думи</a></li>
-                <li><a href="#analytics"><i class="fas fa-chart-line"></i> Аналитика</a></li>
-                <li><a href="#settings"><i class="fas fa-cog"></i> Настройки</a></li>
-            </ul>
-            
-            <div class="navbar-user">
-                <span class="user-name">Кристина Тодорова</span>
-                <button class="btn btn-icon" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-        </nav>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#keywords">Ключови Думи</a></li>
+                    <li><a href="#competitors">Конкуренти</a></li>
+                    <li><a href="#reports">Отчети</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h3>Навигация</h3>
-            </div>
+    <main class="container">
+        <section id="dashboard" class="dashboard">
+            <h2>Dashboard за Представяне на Бранд</h2>
             
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="#dashboard">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#brands">
-                        <i class="fas fa-store"></i>
-                        <span>Брандове</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#keywords">
-                        <i class="fas fa-key"></i>
-                        <span>Ключови думи</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#analytics">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Аналитика</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#reports">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Отчети</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#settings">
-                        <i class="fas fa-cog"></i>
-                        <span>Настройки</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Dashboard Header -->
-            <div class="page-header">
-                <h2>Dashboard Overview</h2>
-                <div class="header-actions">
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-filter"></i> Филтри
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Нов бранд
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dashboard Stats Grid -->
-            <div class="dashboard-grid">
-                <!-- Stat Card 1 -->
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #FF9900;">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Brands</h3>
-                        <p class="stat-number">24</p>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> +12% от миналия месец
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Stat Card 2 -->
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #36B37E;">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Products</h3>
-                        <p class="stat-number">1,248</p>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> +8% от миналия месец
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Stat Card 3 -->
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #6554C0;">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Tracked Keywords</h3>
-                        <p class="stat-number">156</p>
-                        <span class="stat-change neutral">
-                            <i class="fas fa-minus"></i> Без промяна
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Stat Card 4 -->
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #00B8D9;">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Avg. Ranking</h3>
-                        <p class="stat-number">12.4</p>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-down"></i> -2.1 (по-добро)
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Brands Section -->
-            <div class="section">
-                <div class="section-header">
-                    <h3>Последно добавени брандове</h3>
-                    <a href="#brands" class="view-all">Виж всички <i class="fas fa-arrow-right"></i></a>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Средна Позиция</h3>
+                    <div class="metric-value" id="avg-position">-</div>
+                    <div class="metric-trend" id="position-trend">-</div>
                 </div>
                 
-                <div class="brand-grid" id="recentBrands">
-                    <!-- Brand cards ще се зареждат динамично от JavaScript -->
-                    <div class="loading-skeleton">
-                        <div class="skeleton-card"></div>
-                        <div class="skeleton-card"></div>
-                        <div class="skeleton-card"></div>
-                    </div>
+                <div class="metric-card">
+                    <h3>Показател за Видимост</h3>
+                    <div class="metric-value" id="visibility-score">-</div>
+                    <div class="metric-change">-</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Общо Ключови Думи</h3>
+                    <div class="metric-value" id="total-keywords">-</div>
+                    <div class="metric-change">-</div>
+                </div>
+                
+                <div class="metric-card">
+                    <h3>Топ 10 Позиции</h3>
+                    <div class="metric-value" id="top10-count">-</div>
+                    <div class="metric-change">-</div>
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="charts-row">
-                <!-- Rankings Trend Chart -->
+            <div class="charts-grid">
                 <div class="chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Rankings Trend</h3>
-                        <select class="chart-period">
-                            <option>Последните 7 дни</option>
-                            <option>Последните 30 дни</option>
-                            <option>Последните 90 дни</option>
-                        </select>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="rankingsChart"></canvas>
-                    </div>
+                    <h3>Тренд на Класиране (Последните 30 Дни)</h3>
+                    <canvas id="rankingChart"></canvas>
                 </div>
-
-                <!-- Category Distribution Chart -->
+                
                 <div class="chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Разпределение по категории</h3>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="categoryChart"></canvas>
-                    </div>
+                    <h3>Разпределение на Ключови Думи</h3>
+                    <canvas id="keywordChart"></canvas>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-content">
-            <p>&copy; 2026 SP LINK. Проект: BG16RFPR001-1.001</p>
-            <p>Developed by Кристина Тодорова & Team</p>
+        <section id="keywords" class="keywords-section" style="display:none;">
+            <h2>Анализ на Ключови Думи</h2>
+            
+            <div class="search-bar">
+                <input type="text" id="keyword-search" placeholder="Търси ключови думи...">
+                <button onclick="searchKeywords()">Търси</button>
+            </div>
+            
+            <div class="keywords-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ключова Дума</th>
+                            <th>Обем на Търсене</th>
+                            <th>Текуща Позиция</th>
+                            <th>Тенденция</th>
+                            <th>Конкуренция</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keywords-tbody">
+                        <!-- Данните ще се заредят от JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025-2026 SP LINK. ЕС Проект BG16RFPR001-1.001</p>
+            <p>Разработен от Мартин Дачев и екип</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.js"></script>
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="js/chart-config.js"></script>
 </body>
 </html>
