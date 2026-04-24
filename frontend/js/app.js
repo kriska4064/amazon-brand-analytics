@@ -149,3 +149,11 @@ async function createBrand(brandData) {
         alert('Грешка при създаване на бранд: ' + (response?.error || response?.грешка || 'Неизвестна грешка'));
     }
 }
+
+// Brand card click handler - navigate to brand details
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.brand-card');
+  if (card && card.dataset.brandId) {
+    window.location.href = `brand-detail.html?id=${card.dataset.brandId}`;
+  }
+});
