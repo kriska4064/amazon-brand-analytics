@@ -5,3 +5,16 @@
     .brand-grid { grid-template-columns: repeat(2, 1fr); }
     .navbar-menu { font-size: 14px; }
 }
+
+/* Large desktop (1440px+) */
+@media (min-width: 1440px) {
+  .container { max-width: 1360px; }
+  .metrics-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* Print styles for reports */
+@media print {
+  header, nav, .no-print { display: none !important; }
+  .chart-container { break-inside: avoid; page-break-inside: avoid; }
+  body { font-size: 12pt; color: #000; }
+}
