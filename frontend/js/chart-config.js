@@ -157,3 +157,17 @@ if (typeof module !== 'undefined' && module.exports) {
         createCategoryChart
     };
 }
+
+// Default chart color palette
+const CHART_COLORS = {
+  primary: '#4f46e5',
+  secondary: '#10b981',
+  accent: '#f59e0b',
+  danger: '#ef4444',
+  muted: '#94a3b8'
+};
+
+// Apply consistent font to all charts
+Chart.defaults.font.family = "'Inter', 'Segoe UI', sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = '#475569';
