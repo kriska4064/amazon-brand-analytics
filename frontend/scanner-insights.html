@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scanner Insights – Amazon Brand Analytics</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/trl5-modules.css" />
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="logo">
+      <h1>Amazon Brand Analytics</h1>
+      <span class="subtitle">SP LINK · TRL 5</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Scanner</a></li>
+        <li><a href="scanner-insights.html" class="active">Scanner Insights</a></li>
+        <li><a href="brand-insights.html">Brand Insights</a></li>
+        <li><a href="competitor-insights.html">Competitor Insights</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:32px;">
+
+  <div style="margin-bottom:20px;">
+    <h2 style="margin:0;">Scanner Insights</h2>
+    <p style="margin:4px 0 0;color:#6b7280;font-size:.9rem;">
+      Search, filter and export all scan results across marketplaces.
+    </p>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="scanner-toolbar">
+    <input type="text" id="scanner-keyword-search" placeholder="Search by keyword, brand or ASIN..." />
+    <button id="scanner-search-btn">🔍 Search</button>
+
+    <div class="marketplace-selector-wrap">
+      <select id="insights-marketplace-filter">
+        <option value="">All Marketplaces</option>
+      </select>
+    </div>
+
+    <button id="btn-export-current-csv">⬇ Export Filtered CSV</button>
+    <button id="btn-export-all-csv">⬇ Export All CSV</button>
+  </div>
+
+  <!-- Meta row -->
+  <div class="scanner-meta">
+    <span id="scanner-total-count">0 results</span>
+    <span style="display:flex;align-items:center;gap:8px;">
+      Rows per page:
+      <select id="scanner-page-size">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </span>
+  </div>
+
+  <!-- Table -->
+  <div class="scanner-table-wrap" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);">
+    <table class="scanner-table">
+      <thead>
+        <tr>
+          <th data-sort-col="marketplace">Marketplace <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="keyword">Keyword <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="brand">Brand <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="asin">ASIN <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="position">Position <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="sponsored">Type <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="price">Price <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="rating">Rating <span class="sort-icon">⇅</span></th>
+          <th data-sort-col="reviews">Reviews <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody id="scanner-insights-tbody">
+        <tr>
+          <td colspan="9" class="empty-msg">No scan data loaded yet. Run Amazon Scanner first.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div id="scanner-pagination"></div>
+
+</main>
+
+<footer>
+  <div class="container" style="text-align:center;padding:20px;color:#9ca3af;font-size:.84rem;">
+    &copy; 2025–2026 SP LINK · EU Project BG16RFPR001-1.001 · TRL 5
+  </div>
+</footer>
+
+<script src="js/marketplaces.js"></script>
+<script src="js/scanner-insights.js"></script>
+</body>
+</html>

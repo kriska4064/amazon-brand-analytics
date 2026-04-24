@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Insights – Amazon Brand Analytics</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/trl5-modules.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="logo">
+      <h1>Amazon Brand Analytics</h1>
+      <span class="subtitle">SP LINK · TRL 5</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Scanner</a></li>
+        <li><a href="scanner-insights.html">Scanner Insights</a></li>
+        <li><a href="brand-insights.html" class="active">Brand Insights</a></li>
+        <li><a href="competitor-insights.html">Competitor Insights</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:32px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+    <div>
+      <h2 style="margin:0;">Brand Insights</h2>
+      <p style="margin:4px 0 0;color:#6b7280;font-size:.9rem;">
+        Comprehensive performance overview for a single brand — all data from Scanner.
+      </p>
+    </div>
+    <div class="marketplace-selector-wrap">
+      <label for="bi-marketplace-select" style="font-weight:600;font-size:.9rem;">Marketplace</label>
+      <select id="bi-marketplace-select"></select>
+    </div>
+  </div>
+
+  <!-- Brand Selector -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06);">
+    <label for="bi-brand-select" style="font-weight:600;display:block;margin-bottom:8px;">Select Brand</label>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <select id="bi-brand-select" style="flex:1;min-width:200px;padding:9px 14px;border:1px solid #e5e7eb;border-radius:8px;font-size:.95rem;">
+        <option value="">— Choose a brand —</option>
+      </select>
+      <button id="bi-load-btn" style="padding:9px 22px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+        Load Brand Data
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="bi-kpi-grid">
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Brand</div>
+      <div class="kpi-value" id="bi-brand-name">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Total Listings</div>
+      <div class="kpi-value" id="bi-total-listings">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Avg. Position</div>
+      <div class="kpi-value" id="bi-avg-position">—</div>
+      <div class="kpi-sub">All listings</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Organic Avg. Position</div>
+      <div class="kpi-value" id="bi-organic-avg-position" style="color:#22c55e;">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Sponsored Avg. Position</div>
+      <div class="kpi-value" id="bi-sponsored-avg-position" style="color:#f59e0b;">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Avg. Price</div>
+      <div class="kpi-value" id="bi-avg-price">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Organic Avg. Price</div>
+      <div class="kpi-value" id="bi-organic-avg-price" style="color:#22c55e;">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Sponsored Avg. Price</div>
+      <div class="kpi-value" id="bi-sponsored-avg-price" style="color:#f59e0b;">—</div>
+    </div>
+    <div class="bi-kpi-card">
+      <div class="kpi-label">Marketplace</div>
+      <div class="kpi-value" id="bi-marketplace" style="font-size:1.1rem;">—</div>
+    </div>
+  </div>
+
+  <!-- Rank Badges -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+    <div id="bi-organic-rank" class="rank-badge">⚪ <strong>Organic rank:</strong> N/A</div>
+    <div id="bi-sponsored-rank" class="rank-badge">⚪ <strong>Sponsored rank:</strong> N/A</div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="bi-charts-row">
+    <div class="bi-chart-card">
+      <h4>Listing Distribution (Organic vs Sponsored)</h4>
+      <canvas id="bi-listings-chart" height="240"></canvas>
+      <div style="display:flex;gap:16px;margin-top:12px;font-size:.88rem;color:#6b7280;">
+        <span>🟢 Organic: <strong id="bi-organic-count">—</strong></span>
+        <span>🟡 Sponsored: <strong id="bi-sponsored-count">—</strong></span>
+      </div>
+    </div>
+    <div class="bi-chart-card">
+      <h4>Top Keywords</h4>
+      <div style="max-height:260px;overflow-y:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:.86rem;">
+          <thead>
+            <tr style="background:#f8fafc;">
+              <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #e5e7eb;">Keyword</th>
+              <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #e5e7eb;">Position</th>
+              <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #e5e7eb;">Type</th>
+              <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #e5e7eb;">Price</th>
+            </tr>
+          </thead>
+          <tbody id="bi-keywords-tbody">
+            <tr><td colspan="4" style="text-align:center;color:#9ca3af;padding:24px;">Select a brand to view data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="container" style="text-align:center;padding:20px;color:#9ca3af;font-size:.84rem;">
+    &copy; 2025–2026 SP LINK · EU Project BG16RFPR001-1.001 · TRL 5
+  </div>
+</footer>
+
+<script src="js/marketplaces.js"></script>
+<script src="js/brand-insights.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    populateMarketplaceDropdown('bi-marketplace-select', 'US');
+    document.getElementById('bi-load-btn').addEventListener('click', () => {
+      const brand = document.getElementById('bi-brand-select').value;
+      const marketplace = document.getElementById('bi-marketplace-select').value || 'US';
+      if (!brand) { alert('Please select a brand.'); return; }
+      // Fire event – the API layer listens and will respond with brandInsightsData
+      document.dispatchEvent(new CustomEvent('brandInsightsRequest', { detail: { brand, marketplace } }));
+    });
+  });
+</script>
+</body>
+</html>
